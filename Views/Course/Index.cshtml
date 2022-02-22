@@ -29,3 +29,25 @@
             }
     </tbody>
 </table>
+
+<div>
+    Consuming API - CORS DEMO
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $( document ).ready( function ()
+    {
+        $.ajax( {
+            url: "https://az204corsapi.azurewebsites.net/api/course",
+            type: "Get",
+            success: function ( result )
+            {
+                console.log( result );
+            },
+            error: function ( error )
+            {
+                console.log( error );
+            }
+        } );
+    } );
+</script>
