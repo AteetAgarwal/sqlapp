@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace sqlapp.Services
@@ -13,7 +14,7 @@ namespace sqlapp.Services
             return new SqlConnection(_connString);
         }*/
 
-        public IEnumerable<Course> GetCourses(string courses)
+        public async Task<IEnumerable<Course>> GetCourses(string courses=null)
         {
             List<Course> _lst = new List<Course>();
             /*string _statement = "Select CourseId, CourseName, Rating from Course";
@@ -34,7 +35,7 @@ namespace sqlapp.Services
                 }
             }
             _sqlConn.Close();*/
-            string[] courseArr = courses.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            /*string[] courseArr = courses.Split(';', StringSplitOptions.RemoveEmptyEntries);
             foreach(string course in courseArr)
             {
                 string[] arr = course.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -45,8 +46,15 @@ namespace sqlapp.Services
                     Rating =Convert.ToDecimal( arr[2])
                 };
                 _lst.Add(_course);
+                return _lst;
+            }*/
+            string functionUrl = "https://demofunctionapp-az204.azurewebsites.net/api/GetCourses?code=X0nMNNICln0a/fbELXPvRw6FpEklfcmf9VqZ3ZhAPigt0rkTAk06vA==";
+            using (HttpClient _client = new HttpClient())
+            {
+                HttpResponseMessage _response = await _client.GetAsync(functionUrl);
+                string _content = await _response.Content.ReadAsStringAsync();
+                return System.Text.Json.JsonSerializer.Deserialize<IEnumerable<Course>>(_content);
             }
-            return _lst;
         }
     }
 }

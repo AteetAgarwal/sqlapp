@@ -19,7 +19,8 @@ namespace sqlapp.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Course> _course_list = _course_service.GetCourses(_configuration.GetValue<string>("CourseData"));
+            //IEnumerable<Course> _course_list = _course_service.GetCourses(_configuration.GetValue<string>("CourseData"));
+            IEnumerable<Course> _course_list = _course_service.GetCourses().GetAwaiter().GetResult();
             return View(_course_list);
         }
     }
